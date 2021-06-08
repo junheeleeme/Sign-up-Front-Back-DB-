@@ -273,7 +273,7 @@ function chk_birth(){
             const u_id = id_input.value;
             const u_pw = pw_input.value;
             const u_email = email_input.value;
-            const u_phone = phone1_input.value + '-' + phone2_input.value + '-' + phone3_input.value;
+            const u_phone = phone1_input.value + phone2_input.value + phone3_input.value;
             const birth = birth_input.value;
             const gender = document.querySelector('input[name="gender"]:checked').value;
 
