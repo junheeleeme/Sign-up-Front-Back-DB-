@@ -5,10 +5,10 @@ const port = 8080;
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const db = mysql.createConnection({
-    host: '54.180.116.191',
+    host: '13.209.47.11',
     user: 'root',
     password: '594573',
-    port: '58420',
+    port: '58477',
     database: 'account'
 })
 /*
@@ -48,14 +48,33 @@ web.get('/join', (req, res) =>{
     res.sendFile(path.join(__dirname, 'join.html'))    
 }); 
 
-web.post('/create_ac', (req, res)=>{
+web.post('/chk_overlap_id', (req, res)=>{
+    let user_id;
+    db.query(`SELECT u_id FROM ac;`, function(err, dbData){
+        if(err) {
+            console.log(err);
+        }else{
+            for(let i=0 ; i<dbData.length ; i++){
+                if(dbData[i].u_id === req.body.id){      
+                    res.send("overlap is true");
+                }
+            }
+            res.send(req.body);
+        }  
+    })
     
-    res.send(req.body);
-    //const ac = [res.body.id, res.body.pw, res.body.id, res.body.birth, res.body.phone, res.body.email, res.body.gender];
+    /*
     
+*/
+})
 
+
+web.post('/create_ac', (req, res)=>{
+    console.log(req.body)
+    res.send(req.body);    
+    
     db.query(`INSERT INTO ac (u_id, u_pw, u_name, u_birth, u_phone, u_email, u_gender)
-            VALUES('${req.body.id}', '${req.body.pw}', '${req.body.id}', '${req.body.birth}', ${req.body.phone}, '${req.body.email}', '${req.body.gender}')`, function(err, res){
+            VALUES('${req.body.id}', '${req.body.pw}', '${req.body.id}', '${req.body.birth}', ${req.body.phone}, '${req.body.email}', '${req.body.gender}');`, function(err, dbData){
         if(err) {
             console.log(err);
         }else{
@@ -63,6 +82,7 @@ web.post('/create_ac', (req, res)=>{
         }
         
     })
+
     /*
     db.query(`INSERT INTO ac_table (u_id, u_pw, u_name, u_birth, u_phone, u_email, u_gender)
             VALUES( ${ac[0]}, ${ac[1]}, ${ac[2]}, ${ac[3]}, ${ac[4]}, ${ac[5]}, ${ac[6]})`,

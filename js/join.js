@@ -2,6 +2,7 @@
 const eng_pattern = /[a-zA-Z]/;
 const num_pattern = /[0-9]/;
 const kor_parttern = /^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/;
+const name_parttern = /^[|가-힣]*$/;
 let err_msg = '';
 
 // 아이디 형식 체크
@@ -19,6 +20,13 @@ function chk_id(){
 	}else{
 		return false;
 	}	
+}
+// 아이디 중복 여부 체크
+function chk_overlap_id(){
+    const id_txt = { 'id' : id_input.value } ;
+    const url = '/chk_overlap_id';
+
+    dataAjax(id_txt, url);
 }
 
 //비밀번호 재입력 일치 체크
@@ -85,7 +93,7 @@ function chk_email(){
 	
 }
 
-//숫자만 입 (한글 입력은 됨..
+//숫자만 입력 (한글 입력은 됨..
 function only_num(keyCode){
 
     if( (keyCode > 47 && keyCode < 58) || keyCode === 46 || keyCode === 8 || keyCode === 9 ){
@@ -132,6 +140,20 @@ function chk_phone(){
     }    
 }
 
+function chk_name(){
+    const name = name_input.value;
+    const isValue = name_parttern.test(name);
+    
+    if( isValue && name.length > 1 && name.length < 6 ){
+        return true;
+    }else{
+        return false;
+    }
+    
+}
+
+
+// 생년월일 체크
 function chk_birth(){
     const birth_pattern = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
     const birth_txt = birth_input.value;
@@ -145,8 +167,31 @@ function chk_birth(){
     }
 }
 
-//Event Handler
+function dataAjax(data, url){
 
+    $.ajax({
+        url : url,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type : 'POST',
+        data : JSON.stringify(data),
+        cache: false,
+        success : function(res){
+            console.log(res);
+            console.log("중복되는 아이디 없음!");
+
+        },
+        error : function(res){
+            console.log("중복되는 아이디 있음!");
+        }
+    }) 
+
+}
+
+
+
+//Event Handler
+    // 아이디 형식 체크 핸들러
     const id_input = document.querySelector('#uid_txt');
     id_input.addEventListener('keyup', (e)=>{ //
 
@@ -157,8 +202,12 @@ function chk_birth(){
         }
 
     })
+    // 아이디 중복 체크 핸들러
+    id_input.addEventListener('focusout', (e)=>{ //
+        chk_overlap_id();
+    })
 
-	// 비밀번호 입력
+	// 비밀번호 형식 체크 핸들러
 	const pw_input = document.querySelector('#upw_txt');
 	pw_input.addEventListener('keyup', (e)=>{ //pw 길이 체크
 
@@ -201,8 +250,7 @@ function chk_birth(){
 		}		
 	})
 	
-	
-	// 비밀번호 확인 보이기
+	// 비밀번호 재입력 보이기
 	const pwr_show = document.querySelector('.pwr_icon');
 	pwr_show.addEventListener('click', (e)=>{ //패스워드 확인 보이기
 		
@@ -217,7 +265,7 @@ function chk_birth(){
 		}
 	})
 
-    // Email 체크
+    // Email 체크 핸들러
     const email_input = document.querySelector('#uemail_txt');
     email_input.addEventListener('focusout', ()=>{
 
@@ -229,10 +277,11 @@ function chk_birth(){
 
     })
 	
-	// 전화번호 
+	// 전화번호 인풋 박스 
 	const phone1_input = document.querySelector('#uphone_txt1');
 	const phone2_input = document.querySelector('#uphone_txt2');
 	const phone3_input = document.querySelector('#uphone_txt3');
+    
     // 전화번호 숫자 입력만 받기
 	phone1_input.addEventListener('keydown', (e)=>{
 		if(!only_num(e.keyCode)) e.preventDefault();
@@ -243,8 +292,9 @@ function chk_birth(){
 	phone3_input.addEventListener('keydown', (e)=>{
 		if(!only_num(e.keyCode)) e.preventDefault();
 	})
-    // 전화번호 value 체크
-    phone1_input.addEventListener('focusout', (e)=>{
+
+    // 전화번호 형식 체크 핸들러
+        phone1_input.addEventListener('focusout', (e)=>{
         chk_phone();
     })
     phone2_input.addEventListener('focusout', (e)=>{
@@ -254,8 +304,15 @@ function chk_birth(){
         chk_phone();
     })
 
+
+    // 이름 형식 체크 핸들러
+    const name_input = document.querySelector('#uname_txt');
+    name_input.addEventListener('focusout', (e)=>{
+        chk_name();
+    })
+
 	
-    // 생년월일 value 체크
+    // 생년월일 형식 핸들러
     const birth_input = document.querySelector('#ubirth_txt');
     birth_input.addEventListener('focusout', ()=>{
         chk_birth();
@@ -268,41 +325,31 @@ function chk_birth(){
 	submit.addEventListener('click', (e)=>{ // submit
         e.preventDefault();
 
-        if(chk_id() && chk_pw() && chk_email() && chk_phone() && chk_birth()){
+        if(chk_id() && chk_pw() && chk_email() && chk_phone() && chk_name() && chk_birth()){
             
             const u_id = id_input.value;
             const u_pw = pw_input.value;
             const u_email = email_input.value;
             const u_phone = phone1_input.value + phone2_input.value + phone3_input.value;
-            const birth = birth_input.value;
-            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const u_name = name_input.value;
+            const u_birth = birth_input.value;
+            const u_gender = document.querySelector('input[name="gender"]:checked').value;
 
             const _data = { 
                 'id' : u_id,
                 'pw' : u_pw,
                 'email' : u_email,
                 'phone' : u_phone,
-                'birth' : birth,
-                'gende' : gender
+                'name' : u_name,
+                'birth' : u_birth,
+                'gende' : u_gender
             }
             
             console.log(_data);
+            const url = '/create_ac';
+    
+            dataAjax(_data, url);
             
-            $.ajax({
-                url : '/create_ac',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type : 'POST',
-                data : JSON.stringify(_data),
-                cache: false,
-                success : function(res){
-                    console.log(res);
-                },
-                error : function(res){
-                    console.log(res);
-                }
-            })             
-
         }
 	})
 	
