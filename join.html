@@ -42,47 +42,61 @@
                         </header>
                         <div class="join-wrap">
 <form action="/create_ac" id="user_join" method="post">
-	<div class="pw_icon">
-		<i class="far fa-eye" id="pw_hide"></i>
-		<i class="fas fa-eye" id="pw_show"></i>
-	</div>
-	<div class="pwr_icon">
-		<i class="far fa-eye" id="pw_hide"></i>
-		<i class="fas fa-eye" id="pw_show"></i>
-	</div>
-	
-	<p>아이디</p>
-	<input type="text" name="uid" id="uid_txt" placeholder="아이디" maxlength="15" value="abcd321">
-	<p>비밀번호</p>
+	<div id="id_sec">
+        <p class="input_title">아이디</p>
+        <input type="text" name="uid" id="uid_txt" placeholder="아이디" maxlength="15" value="abcd321">
+        <p class="err_msg">오류 메세지</p>
+    </div>
+    <div id="pw_sec">
+        <p class="input_title">비밀번호</p>
 	<input type="password" value="abcdef!1" name="upw" id="upw_txt" placeholder="비밀번호 (8~12자리의 특수문자 포함)" maxlength="12">
 	<input type="password" value="abcdef!1" name="upwr" id="upwr_txt" placeholder="비밀번호 확인" maxlength="12">
-	<p>이메일</p>
-	<input type="text" value="abc@abc.com" name="uemail" id="uemail_txt" placeholder="E-mail ex) abc@abc.com">
-	<p>전화번호</p>
-	<input type="text" name="uphone1" id="uphone_txt1" value="010" maxlength="3"><span>&#45;</span>
-	<input type="text" name="uphone2" id="uphone_txt2" maxlength="4" value="1234"><span>&#45;</span>
-	<input type="text" name="uphone3" id="uphone_txt3" maxlength="4" value="1234">
-	<p>이름</p>
-    <input type="text" name="uname" id="uname_txt" placeholder="이름" maxlength="5" value="홍길동">
-	<p>생년월일</p>
-	<input type="date" name="ubirth" id="ubirth_txt" value="1990-01-01">
-
-	<p>성별</p>
-	<div id="gender">
-<div class="gender_select">
-  <input type="radio" id="hide" name="gender" value="unkown"
-         checked>
-  <label for="unkown">선택안함</label>
-</div>
-<div class="gender_select">
-  <input type="radio" id="male" name="gender" value="male">
-  <label for="male">남성</label>
-</div>
-<div class="gender_select">
-  <input type="radio" id="female" name="gender" value="female">
-  <label for="female">여성</label>
-</div>  
-</div>
+        <p class="err_msg">오류메세지</p>
+        <div class="pw_icon">
+            <i class="far fa-eye" id="pw_hide"></i>
+            <i class="fas fa-eye" id="pw_show"></i>
+        </div>
+        <div class="pwr_icon">
+            <i class="far fa-eye" id="pw_hide"></i>
+            <i class="fas fa-eye" id="pw_show"></i>
+        </div>
+    </div>
+	<div id="email_sec">
+	    <p class="input_title">이메일</p>
+	    <input type="text" value="abc@abc.com" name="uemail" id="uemail_txt" placeholder="E-mail ex) abc@abc.com">
+        <p class="err_msg">오류메세지</p>
+    </div>
+    <div id="phone_sec">
+        <p class="input_title">전화번호</p>
+	    <input type="text" name="uphone1" id="uphone_txt1" value="010" maxlength="3"><span>&#45;</span>
+	    <input type="text" name="uphone2" id="uphone_txt2" maxlength="4" value="1234"><span>&#45;</span>
+	    <input type="text" name="uphone3" id="uphone_txt3" maxlength="4" value="1234">
+        <p class="err_msg">오류메세지</p>
+    </div>
+    <div id="name_sec">
+        <p class="input_title">이름</p>
+        <input type="text" name="uname" id="uname_txt" placeholder="이름" maxlength="5" value="홍길동">
+        <p class="err_msg">오류메세지</p>
+    </div>
+    <div id="date_sec">
+	    <input type="date" name="ubirth" id="ubirth_txt" value="1990-01-01">
+    </div>
+    <div id="gender_sec">
+        <p class="input_title">성별</p>
+        <div class="gender_select">
+        <input type="radio" id="hide" name="gender" value="unkown"
+                checked>
+        <label for="unkown">선택안함</label>
+        </div>
+        <div class="gender_select">
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">남성</label>
+        </div>
+        <div class="gender_select">
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">여성</label>
+        </div>  
+    </div>
 	<button type="button" id="submit">다음</button>
 </form>
                             
@@ -136,7 +150,7 @@
             </div>
         </div>
         <!-- Footer-->
-        <footer class="py-5 bg-dark">
+        <footer class="py-4 bg-dark fixed-bottom">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
         </footer>
         <!-- Bootstrap core JS-->

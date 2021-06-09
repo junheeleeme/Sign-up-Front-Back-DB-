@@ -11,22 +11,43 @@ function chk_id(){
 	const kor_pattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; 
 	const special_pattern = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;// 특수문자 제외: _
 	const id_txt = document.querySelector('#uid_txt').value.replace(/ /g,""); //공백제거
-	
+	const err = document.querySelector('#id_sec>.err_msg');
+
 	if( (eng_pattern.test(id_txt) && num_pattern.test(id_txt)) && 
     !special_pattern.test(id_txt) && id_txt.length > 5 && id_txt.length < 15 ){
 	// 영문+숫자 && 특수문자 '_'만 허용 && 길이 6 이상 14이하
 		
 		return true;
 	}else{
+        err.textContent = "아이디 형식 오류! 영문자와 숫자, 특수문자(_) 조합으로 사용";
+        addOffClass(id_input);       
 		return false;
 	}	
 }
 // 아이디 중복 여부 체크
 function chk_overlap_id(){
+    const err = document.querySelector('#id_sec>.err_msg');
     const id_txt = { 'id' : id_input.value } ;
-    const url = '/chk_overlap_id';
 
-    dataAjax(id_txt, url);
+    $.ajax({ // 아이디 중복 확인 AJAX코드
+        url : '/chk_overlap_id',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type : 'POST',
+        data : JSON.stringify(id_txt),
+        cache: false,
+        success : function(res){
+            console.log(res);
+            console.log("중복되는 아이디 없음! 클리어!");
+            addOnClass(id_input);
+        },
+        error : function(res){
+            console.log("중복되는 아이디 있음! 실패~!");
+            err.textContent = "존재하는 아이디입니다.";
+            addOffClass(id_input);
+        }
+    }) 
+
 }
 
 //비밀번호 재입력 일치 체크
@@ -64,31 +85,37 @@ function chk_pw(){
     
     const pw1 = document.querySelector('#upw_txt').value.replace(/ /g,"");
     const pw2 = document.querySelector('#upwr_txt').value.replace(/ /g,"");
-    
+    const err = document.querySelector('#pw_sec>.err_msg');
+
     if(chk_same_pw(pw1, pw2)){ // 비밀번호 재입력 일치 확인
 
         if( chk_vali_pw(pw1) && chk_vali_pw(pw2) && chk_length_pw(pw1) && chk_length_pw(pw2) ){
             console.log("Paswword Clear")
-            return true;
+            addOnClass(pw_input); 
+            addOnClass(pwr_input);
         }else{
-        console.log("8~12자리 영문자와 숫자, 특수문자를 사용해야합니다.")
-        return false;
+            err.textContent = "8~12자리 영문자와 숫자, 특수문자를 사용해야합니다.";
+            addOffClass(pw_input); 
+            addOffClass(pwr_input);
         }
     }else{
-        console.log("비밀번호가 일치하지 않습니다.")
-        return false;
+        err.textContent = "비밀번호가 일치하지 않습니다.";
+        addOffClass(pw_input); 
+        addOffClass(pwr_input);
     }
 }
 
 //이메일 형식 체크
 function chk_email(){
-	
+	const err = document.querySelector('#email_sec>.err_msg');
 	const email_pattern = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
 	const email_txt = email_input.value;
-	if(email_pattern.test(email_txt)){ 
-		return true;
+
+	if(email_pattern.test(email_txt)){
+        addOnClass(email_input);
 	}else{
-		return false;
+		err.textContent = "이메일 형식이 올바르지 않습니다.";
+        addOffClass(email_input);
 	}
 	
 }
@@ -111,43 +138,45 @@ function chk_phone(){
     const phone1_txt = document.querySelector('#uphone_txt1').value.replace(/ /g,""); //공백제거;
     const phone2_txt = document.querySelector('#uphone_txt2').value.replace(/ /g,""); //공백제거;
     const phone3_txt = document.querySelector('#uphone_txt3').value.replace(/ /g,""); //공백제거;
+    const err = document.querySelector('#phone_sec>.err_msg');
     
     if( phone1_txt.length > 2 && phone2_txt.length > 2 && phone3_txt.length > 3){// 전화번호 길이 체크
         if(!eng_pattern.test(phone1_txt) && !eng_pattern.test(phone2_txt) && !eng_pattern.test(phone3_txt)){
             if(!special_pattern.test(phone1_txt) && !special_pattern.test(phone2_txt) && !special_pattern.test(phone3_txt)){
                 // 전호번호 value all clear
-                phone1_input.classList.add('on');
-                phone2_input.classList.add('on');
-                phone3_input.classList.add('on'); 
-                return true;
+                addOnClass(phone1_input);
+                addOnClass(phone2_input);
+                addOnClass(phone3_input);
             }else{//특수문자 포함
-                phone1_input.classList.remove('on');
-                phone2_input.classList.remove('on');
-                phone3_input.classList.remove('on');
-                return false;
+                err.textContent = "숫자만 입력해주세요.";
+                addOffClass(phone1_input);
+                addOffClass(phone2_input);
+                addOffClass(phone3_input);
             }
         }else{//영문자 포함
-            phone1_input.classList.remove('on');
-            phone2_input.classList.remove('on');
-            phone3_input.classList.remove('on');
-            return false;
+            err.textContent = "숫자만 입력해주세요.";
+            addOffClass(phone1_input);
+            addOffClass(phone2_input);
+            addOffClass(phone3_input);
         }
     }else{//길이 부족
-        phone1_input.classList.remove('on');
-        phone2_input.classList.remove('on');
-        phone3_input.classList.remove('on');
-        return false;
+        err.textContent = "전화번호 형식이 올바르지 않습니다.";
+        addOffClass(phone1_input);
+        addOffClass(phone2_input);
+        addOffClass(phone3_input);
     }    
 }
 
 function chk_name(){
+    const err = document.querySelector('#name_sec>.err_msg');
     const name = name_input.value;
     const isValue = name_parttern.test(name);
     
     if( isValue && name.length > 1 && name.length < 6 ){
-        return true;
+        addOnClass(name_input);
     }else{
-        return false;
+        err.textContent = "이름이 정확하지 않습니다.";
+        addOffClass(name_input);
     }
     
 }
@@ -168,6 +197,7 @@ function chk_birth(){
 }
 
 function dataAjax(data, url){
+    const err = document.querySelector('#id_sec>.err_msg');
 
     $.ajax({
         url : url,
@@ -178,60 +208,61 @@ function dataAjax(data, url){
         cache: false,
         success : function(res){
             console.log(res);
-            console.log("중복되는 아이디 없음!");
-
+            console.log("중복되는 아이디 없음! 클리어!");
+            id_input.classList.remove('off');
+            id_input.classList.add('on');
         },
         error : function(res){
-            console.log("중복되는 아이디 있음!");
+            console.log("중복되는 아이디 있음! 실패~!");
+            err.textContent = "존재하는 아이디입니다.";
+            id_input.classList.remove('on');
+            id_input.classList.add('off');
         }
     }) 
-
 }
 
+function addOnClass(target){
+    target.classList.remove('off'); 
+    target.classList.add('on'); 
+}
 
+function addOffClass(target){
+    target.classList.remove('on'); 
+    target.classList.add('off'); 
+}
+
+function removeClass(target){
+    target.classList.remove('on');
+    target.classList.remove('off');
+}
 
 //Event Handler
-    // 아이디 형식 체크 핸들러
+ 
+    // 아이디 중복/형식 체크 핸들러
     const id_input = document.querySelector('#uid_txt');
-    id_input.addEventListener('keyup', (e)=>{ //
-
-        if(chk_id()){
-            id_input.classList.add('on');
-        }else{
-            id_input.classList.remove('on');
-        }
-
-    })
-    // 아이디 중복 체크 핸들러
     id_input.addEventListener('focusout', (e)=>{ //
-        chk_overlap_id();
+        
+        if(chk_id()){// 아이디 형식 체크
+            chk_overlap_id()//중복 체크
+        }
     })
-
+    
 	// 비밀번호 형식 체크 핸들러
 	const pw_input = document.querySelector('#upw_txt');
 	pw_input.addEventListener('keyup', (e)=>{ //pw 길이 체크
-
-        if(chk_pw()){
-            pw_input.classList.add('on'); 
-            pwr_input.classList.add('on');            
-        }else{
-			pw_input.classList.remove('on');
-            pwr_input.classList.remove('on');
-		}
-        
+        chk_pw();
+	})
+    pw_input.addEventListener('focusout', (e)=>{ 
+		chk_pw();
 	})
 
 	// 비밀번호 입력
 	const pwr_input = document.querySelector('#upwr_txt');
 	pwr_input.addEventListener('keyup', (e)=>{ 
-		
-        if(chk_pw()){
-            pw_input.classList.add('on'); 
-            pwr_input.classList.add('on');            
-        }else{
-			pw_input.classList.remove('on');
-            pwr_input.classList.remove('on');
-		}
+		chk_pw();
+	})
+    pwr_input.addEventListener('focusout', (e)=>{ 
+		chk_pw();
 	})
 		
 	// 비밀번호 보이기
@@ -268,13 +299,7 @@ function dataAjax(data, url){
     // Email 체크 핸들러
     const email_input = document.querySelector('#uemail_txt');
     email_input.addEventListener('focusout', ()=>{
-
-        if(chk_email()){
-            email_input.classList.add('on');
-        }else{
-            email_input.classList.remove('on');
-        }
-
+        chk_email();
     })
 	
 	// 전화번호 인풋 박스 
@@ -294,7 +319,7 @@ function dataAjax(data, url){
 	})
 
     // 전화번호 형식 체크 핸들러
-        phone1_input.addEventListener('focusout', (e)=>{
+    phone1_input.addEventListener('focusout', (e)=>{
         chk_phone();
     })
     phone2_input.addEventListener('focusout', (e)=>{
@@ -303,7 +328,6 @@ function dataAjax(data, url){
     phone3_input.addEventListener('focusout', (e)=>{
         chk_phone();
     })
-
 
     // 이름 형식 체크 핸들러
     const name_input = document.querySelector('#uname_txt');
@@ -353,7 +377,3 @@ function dataAjax(data, url){
         }
 	})
 	
-		
-		
-		
-		

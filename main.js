@@ -5,10 +5,10 @@ const port = 8080;
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const db = mysql.createConnection({
-    host: '13.209.47.11',
+    host: '3.34.124.239',
     user: 'root',
     password: '594573',
-    port: '58477',
+    port: '59686',
     database: 'account'
 })
 /*
@@ -74,7 +74,7 @@ web.post('/create_ac', (req, res)=>{
     res.send(req.body);    
     
     db.query(`INSERT INTO ac (u_id, u_pw, u_name, u_birth, u_phone, u_email, u_gender)
-            VALUES('${req.body.id}', '${req.body.pw}', '${req.body.id}', '${req.body.birth}', ${req.body.phone}, '${req.body.email}', '${req.body.gender}');`, function(err, dbData){
+            VALUES('${req.body.id}', '${req.body.pw}', '${req.body.name}', '${req.body.birth}', ${req.body.phone}, '${req.body.email}', '${req.body.gender}');`, function(err, dbData){
         if(err) {
             console.log(err);
         }else{
@@ -83,16 +83,6 @@ web.post('/create_ac', (req, res)=>{
         
     })
 
-    /*
-    db.query(`INSERT INTO ac_table (u_id, u_pw, u_name, u_birth, u_phone, u_email, u_gender)
-            VALUES( ${ac[0]}, ${ac[1]}, ${ac[2]}, ${ac[3]}, ${ac[4]}, ${ac[5]}, ${ac[6]})`,
-    function(err, res){
-                if(err){
-                    console.log(err)
-                }
-                console.log("success!");
-    })
-    */
 })
 
 web.listen(port, () =>{
