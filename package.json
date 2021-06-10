@@ -1,19 +1,25 @@
 {
   "name": "main-page",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "web.js",
   "scripts": {
+    "start": "pm2 start ./bin/www.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "homebrew": "^0.1.0",
     "mysql": "^2.18.1",
     "pm2": "^4.5.6",
     "sanitize-html": "^2.4.0"
-  }
+  },
+  "bin": {
+    "main-page": "www.js"
+  },
+  "devDependencies": {},
+  "description": ""
 }
