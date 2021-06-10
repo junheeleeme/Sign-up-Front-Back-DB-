@@ -40,11 +40,13 @@ function chk_overlap_id(){
             console.log(res);
             console.log("중복되는 아이디 없음! 클리어!");
             addOnClass(id_input);
+            return true;
         },
         error : function(res){
             console.log("중복되는 아이디 있음! 실패~!");
             err.textContent = "존재하는 아이디입니다.";
             addOffClass(id_input);
+            return false;
         }
     }) 
 
@@ -90,18 +92,20 @@ function chk_pw(){
     if(chk_same_pw(pw1, pw2)){ // 비밀번호 재입력 일치 확인
 
         if( chk_vali_pw(pw1) && chk_vali_pw(pw2) && chk_length_pw(pw1) && chk_length_pw(pw2) ){
-            console.log("Paswword Clear")
             addOnClass(pw_input); 
             addOnClass(pwr_input);
+            return true;
         }else{
             err.textContent = "8~12자리 영문자와 숫자, 특수문자를 사용해야합니다.";
             addOffClass(pw_input); 
             addOffClass(pwr_input);
+            return false;
         }
     }else{
         err.textContent = "비밀번호가 일치하지 않습니다.";
         addOffClass(pw_input); 
         addOffClass(pwr_input);
+        return false;
     }
 }
 
@@ -113,9 +117,11 @@ function chk_email(){
 
 	if(email_pattern.test(email_txt)){
         addOnClass(email_input);
+        return true;
 	}else{
 		err.textContent = "이메일 형식이 올바르지 않습니다.";
         addOffClass(email_input);
+        return false;
 	}
 	
 }
@@ -147,23 +153,27 @@ function chk_phone(){
                 addOnClass(phone1_input);
                 addOnClass(phone2_input);
                 addOnClass(phone3_input);
+                return true;
             }else{//특수문자 포함
                 err.textContent = "숫자만 입력해주세요.";
                 addOffClass(phone1_input);
                 addOffClass(phone2_input);
                 addOffClass(phone3_input);
+                return false;
             }
         }else{//영문자 포함
             err.textContent = "숫자만 입력해주세요.";
             addOffClass(phone1_input);
             addOffClass(phone2_input);
             addOffClass(phone3_input);
+            return false;
         }
     }else{//길이 부족
         err.textContent = "전화번호 형식이 올바르지 않습니다.";
         addOffClass(phone1_input);
         addOffClass(phone2_input);
         addOffClass(phone3_input);
+        return false;
     }    
 }
 
@@ -174,9 +184,11 @@ function chk_name(){
     
     if( isValue && name.length > 1 && name.length < 6 ){
         addOnClass(name_input);
+        return true;
     }else{
         err.textContent = "이름이 정확하지 않습니다.";
         addOffClass(name_input);
+        return false;
     }
     
 }
@@ -196,8 +208,7 @@ function chk_birth(){
     }
 }
 
-function dataAjax(data, url){
-    const err = document.querySelector('#id_sec>.err_msg');
+function sign_up(data, url){
 
     $.ajax({
         url : url,
@@ -208,15 +219,10 @@ function dataAjax(data, url){
         cache: false,
         success : function(res){
             console.log(res);
-            console.log("중복되는 아이디 없음! 클리어!");
-            id_input.classList.remove('off');
-            id_input.classList.add('on');
+            console.log("회원가입 성공!");
         },
         error : function(res){
-            console.log("중복되는 아이디 있음! 실패~!");
-            err.textContent = "존재하는 아이디입니다.";
-            id_input.classList.remove('on');
-            id_input.classList.add('off');
+            console.log("회원가입 실패!");
         }
     }) 
 }
@@ -243,7 +249,12 @@ function removeClass(target){
     id_input.addEventListener('focusout', (e)=>{ //
         
         if(chk_id()){// 아이디 형식 체크
-            chk_overlap_id()//중복 체크
+            if(chk_overlap_id()){//중복 체크
+                return true;
+            }else{
+                return false;
+            }
+                
         }
     })
     
@@ -348,9 +359,10 @@ function removeClass(target){
 
 	submit.addEventListener('click', (e)=>{ // submit
         e.preventDefault();
-
-        if(chk_id() && chk_pw() && chk_email() && chk_phone() && chk_name() && chk_birth()){
+        
+        if(chk_id() && chk_pw() && chk_email() && chk_phone() && chk_name() && chk_birth() && chk_overlap_id()){
             
+            const url = '/create_ac';
             const u_id = id_input.value;
             const u_pw = pw_input.value;
             const u_email = email_input.value;
@@ -368,11 +380,8 @@ function removeClass(target){
                 'birth' : u_birth,
                 'gende' : u_gender
             }
-            
-            console.log(_data);
-            const url = '/create_ac';
-    
-            dataAjax(_data, url);
+                
+            sign_up(_data, url);
             
         }
 	})

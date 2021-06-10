@@ -32,26 +32,26 @@
         <!-- Page content-->
         <div class="container mt-5">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg">
                     <!-- Post content-->
                     <article>
                         <!-- Post header-->
-                        <header class="mb-4">
+                        <header class="mb-5 text-center">
                             <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">Welcome to WebSite! Sign Up!</h1>
+                            <h1 class="fw-bolder">회원가입</h1>
                         </header>
                         <div class="join-wrap">
 <form action="/create_ac" id="user_join" method="post">
 	<div id="id_sec">
         <p class="input_title">아이디</p>
         <input type="text" name="uid" id="uid_txt" placeholder="아이디" maxlength="15" value="abcd321">
-        <p class="err_msg">오류 메세지</p>
+        <p class="err_msg"></p>
     </div>
     <div id="pw_sec">
         <p class="input_title">비밀번호</p>
 	<input type="password" value="abcdef!1" name="upw" id="upw_txt" placeholder="비밀번호 (8~12자리의 특수문자 포함)" maxlength="12">
 	<input type="password" value="abcdef!1" name="upwr" id="upwr_txt" placeholder="비밀번호 확인" maxlength="12">
-        <p class="err_msg">오류메세지</p>
+        <p class="err_msg"></p>
         <div class="pw_icon">
             <i class="far fa-eye" id="pw_hide"></i>
             <i class="fas fa-eye" id="pw_show"></i>
@@ -64,19 +64,19 @@
 	<div id="email_sec">
 	    <p class="input_title">이메일</p>
 	    <input type="text" value="abc@abc.com" name="uemail" id="uemail_txt" placeholder="E-mail ex) abc@abc.com">
-        <p class="err_msg">오류메세지</p>
+        <p class="err_msg"></p>
     </div>
     <div id="phone_sec">
         <p class="input_title">전화번호</p>
 	    <input type="text" name="uphone1" id="uphone_txt1" value="010" maxlength="3"><span>&#45;</span>
 	    <input type="text" name="uphone2" id="uphone_txt2" maxlength="4" value="1234"><span>&#45;</span>
 	    <input type="text" name="uphone3" id="uphone_txt3" maxlength="4" value="1234">
-        <p class="err_msg">오류메세지</p>
+        <p class="err_msg"></p>
     </div>
     <div id="name_sec">
         <p class="input_title">이름</p>
         <input type="text" name="uname" id="uname_txt" placeholder="이름" maxlength="5" value="홍길동">
-        <p class="err_msg">오류메세지</p>
+        <p class="err_msg"></p>
     </div>
     <div id="date_sec">
 	    <input type="date" name="ubirth" id="ubirth_txt" value="1990-01-01">

@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "main": "web.js",
   "scripts": {
-    "start": "pm2 start ./bin/www.js --watch",
+    "start": "pm2 start ./web/bin/www.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "homebrew": "^0.1.0",
     "mysql": "^2.18.1",
