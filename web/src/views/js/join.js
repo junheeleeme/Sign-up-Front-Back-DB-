@@ -14,7 +14,7 @@ function chk_id(){
 	const err = document.querySelector('#id_sec>.err_msg');
 
 	if( (eng_pattern.test(id_txt) && num_pattern.test(id_txt)) && 
-    !special_pattern.test(id_txt) && id_txt.length > 5 && id_txt.length < 15 ){
+    !special_pattern.test(id_txt) && !kor_pattern.test(id_txt) && id_txt.length > 5 && id_txt.length < 15 ){
 	// 영문+숫자 && 특수문자 '_'만 허용 && 길이 6 이상 14이하
 		
 		return true;
@@ -23,33 +23,52 @@ function chk_id(){
         addOffClass(id_input);       
 		return false;
 	}	
-}
-// 아이디 중복 여부 체크
-function chk_overlap_id(){
-    const err = document.querySelector('#id_sec>.err_msg');
-    const id_txt = { 'id' : id_input.value } ;
 
-    $.ajax({ // 아이디 중복 확인 AJAX코드
-        url : '/chk_overlap_id',
+}
+
+// 아이디 중복 여부 체크
+function chk_overlap_id(callback){ 
+	
+	const id_txt = document.querySelector('#uid_txt').value;
+	const data = { account : { 'id' : id_txt } };
+    const err_msg = document.querySelector('#id_sec>.err_msg');
+	
+	return new Promise((resolve, reject) =>{
+		
+		axios.post('/chk_overlap_id', data).then( (res) => {
+		if(res.status === 200){
+			console.log("사용 가능한 아이디");
+			addOnClass(id_input);
+			resolve(true);
+		}
+		}).catch( (err)=> {  
+			//console.log(err); 
+			err_msg.textContent = "존재하는 아이디입니다.";
+			addOffClass(id_input);
+			reject('중복된 아이디');
+		});	
+	});
+
+//    ********* Axios Ajax *********
+	
+    
+//    ********* Jquery Ajax *********
+/* 
+        $.ajax({ // 아이디 중복 확인 AJAX코드
+        url : 
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         type : 'POST',
         data : JSON.stringify(id_txt),
         cache: false,
         success : function(res){
-            console.log(res);
-            console.log("중복되는 아이디 없음! 클리어!");
-            addOnClass(id_input);
-            return true;
+            
         },
         error : function(res){
-            console.log("중복되는 아이디 있음! 실패~!");
-            err.textContent = "존재하는 아이디입니다.";
-            addOffClass(id_input);
-            return false;
+            
         }
     }) 
-
+*/
 }
 
 //비밀번호 재입력 일치 체크
@@ -208,8 +227,25 @@ function chk_birth(){
     }
 }
 
-function sign_up(data, url){
+function sign_up(data, res){
 
+	return new Promise( (resolve, reject) =>{
+		
+		axios.post('/create_ac', data
+		).then(function (res) {
+			if(res.status === 200){
+				console.log("회원가입 성공!");
+				resolve(true);
+			}
+		})
+		.catch(function (err) {
+			console.log("회원가입 실패!");
+			console.log(err);
+			reject(false);
+		});
+		
+	})
+/*
     $.ajax({
         url : url,
         contentType: 'application/json; charset=utf-8',
@@ -224,7 +260,8 @@ function sign_up(data, url){
         error : function(res){
             console.log("회원가입 실패!");
         }
-    }) 
+    })
+*/
 }
 
 function addOnClass(target){
@@ -253,8 +290,7 @@ function removeClass(target){
                 return true;
             }else{
                 return false;
-            }
-                
+            }      
         }
     })
     
@@ -359,30 +395,38 @@ function removeClass(target){
 
 	submit.addEventListener('click', (e)=>{ // submit
         e.preventDefault();
-        
-        if(chk_id() && chk_pw() && chk_email() && chk_phone() && chk_name() && chk_birth() && chk_overlap_id()){
-            
-            const url = '/create_ac';
-            const u_id = id_input.value;
-            const u_pw = pw_input.value;
-            const u_email = email_input.value;
-            const u_phone = phone1_input.value + phone2_input.value + phone3_input.value;
-            const u_name = name_input.value;
-            const u_birth = birth_input.value;
-            const u_gender = document.querySelector('input[name="gender"]:checked').value;
+        if( chk_id() && chk_pw() && chk_email() && chk_phone() && chk_name() && chk_birth() ){
+			
+			chk_overlap_id().then((res) =>{
+				
+				if(res === true){
+					
+					const u_id = id_input.value;
+					const u_pw = pw_input.value;
+					const u_email = email_input.value;
+					const u_phone = phone1_input.value + phone2_input.value + phone3_input.value;
+					const u_name = name_input.value;
+					const u_birth = birth_input.value;
+					const u_gender = document.querySelector('input[name="gender"]:checked').value;
 
-            const _data = { 
-                'id' : u_id,
-                'pw' : u_pw,
-                'email' : u_email,
-                'phone' : u_phone,
-                'name' : u_name,
-                'birth' : u_birth,
-                'gende' : u_gender
-            }
-                
-            sign_up(_data, url);
-            
+					const _data = { 
+						'id' : u_id,
+						'pw' : u_pw,
+						'email' : u_email,
+						'phone' : u_phone,
+						'name' : u_name,
+						'birth' : u_birth,
+						'gender' : u_gender
+					}
+					
+					sign_up(_data, (res)=>{
+						if(res === true){
+							console.log('회원가입 성공');
+						}else{
+							console.log('회원가입 실패');
+						}			
+					});		
+				}
+			})
         }
 	})
-	

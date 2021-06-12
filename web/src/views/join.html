@@ -8,16 +8,18 @@
         <title>Sign Up</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-		<script src="https://kit.fontawesome.com/707d4688ac.js" crossorigin="anonymous"></script>
+
+        <script src="https://kit.fontawesome.com/707d4688ac.js" crossorigin="anonymous"></script>
         <link href="/css/style.css" rel="stylesheet" />
+        <!-- jquery/axios-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
     <body>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
+                <a class="navbar-brand" href="#!">juni-official!</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -44,13 +46,13 @@
 <form action="/create_ac" id="user_join" method="post">
 	<div id="id_sec">
         <p class="input_title">아이디</p>
-        <input type="text" name="uid" id="uid_txt" placeholder="아이디" maxlength="15" value="abcd321">
+        <input type="text" name="uid" id="uid_txt" placeholder="아이디" maxlength="15" value="">
         <p class="err_msg"></p>
     </div>
     <div id="pw_sec">
         <p class="input_title">비밀번호</p>
-	<input type="password" value="abcdef!1" name="upw" id="upw_txt" placeholder="비밀번호 (8~12자리의 특수문자 포함)" maxlength="12">
-	<input type="password" value="abcdef!1" name="upwr" id="upwr_txt" placeholder="비밀번호 확인" maxlength="12">
+	<input type="password" value="" name="upw" id="upw_txt" placeholder="비밀번호 (8~12자리의 특수문자 포함)" maxlength="12" autocomplete="off">
+	<input type="password" value="" name="upwr" id="upwr_txt" placeholder="비밀번호 확인" maxlength="12" autocomplete="off">
         <p class="err_msg"></p>
         <div class="pw_icon">
             <i class="far fa-eye" id="pw_hide"></i>
@@ -63,23 +65,23 @@
     </div>
 	<div id="email_sec">
 	    <p class="input_title">이메일</p>
-	    <input type="text" value="abc@abc.com" name="uemail" id="uemail_txt" placeholder="E-mail ex) abc@abc.com">
+	    <input type="text" value="" name="uemail" id="uemail_txt" placeholder="E-mail ex) abc@abc.com">
         <p class="err_msg"></p>
     </div>
     <div id="phone_sec">
         <p class="input_title">전화번호</p>
 	    <input type="text" name="uphone1" id="uphone_txt1" value="010" maxlength="3"><span>&#45;</span>
-	    <input type="text" name="uphone2" id="uphone_txt2" maxlength="4" value="1234"><span>&#45;</span>
-	    <input type="text" name="uphone3" id="uphone_txt3" maxlength="4" value="1234">
+	    <input type="text" name="uphone2" id="uphone_txt2" maxlength="4" value=""><span>&#45;</span>
+	    <input type="text" name="uphone3" id="uphone_txt3" maxlength="4" value="">
         <p class="err_msg"></p>
     </div>
     <div id="name_sec">
         <p class="input_title">이름</p>
-        <input type="text" name="uname" id="uname_txt" placeholder="이름" maxlength="5" value="홍길동">
+        <input type="text" name="uname" id="uname_txt" placeholder="이름" maxlength="5" value="">
         <p class="err_msg"></p>
     </div>
     <div id="date_sec">
-	    <input type="date" name="ubirth" id="ubirth_txt" value="1990-01-01">
+        <input type="date" name="ubirth" id="ubirth_txt" value="1990-01-01">
     </div>
     <div id="gender_sec">
         <p class="input_title">성별</p>
@@ -99,11 +101,9 @@
     </div>
 	<button type="button" id="submit">다음</button>
 </form>
-                            
-
+                        
                         </div>
                     </article>
-                    
 
                 </div>
 
@@ -151,7 +151,7 @@
         </div>
         <!-- Footer-->
         <footer class="py-4 bg-dark fixed-bottom">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; juni-official Website 2021</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
