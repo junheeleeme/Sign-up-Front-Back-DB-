@@ -10829,7 +10829,7 @@ textarea.form-control-lg {
   position: relative;
   width: 400px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding-bottom: 50px;
 }
 @media screen and (max-width: 768px) {
   .join-wrap{

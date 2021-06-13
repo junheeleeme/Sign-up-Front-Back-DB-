@@ -5,7 +5,7 @@ const kor_parttern = /^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/;
 const name_parttern = /^[|가-힣]*$/;
 let err_msg = '';
 
-// 아이디 형식 체크
+// 아이디 형식 or 중복여부 체크
 function chk_id(){
 	
 	const kor_pattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; 
@@ -25,6 +25,9 @@ function chk_id(){
 	}	
 
 }
+  // 아이디 형식 체크
+			
+
 
 // 아이디 중복 여부 체크
 function chk_overlap_id(callback){ 
@@ -46,7 +49,9 @@ function chk_overlap_id(callback){
 			err_msg.textContent = "존재하는 아이디입니다.";
 			addOffClass(id_input);
 			reject('중복된 아이디');
-		});	
+		});
+		
+		
 	});
 
 //    ********* Axios Ajax *********
@@ -70,6 +75,7 @@ function chk_overlap_id(callback){
     }) 
 */
 }
+
 
 //비밀번호 재입력 일치 체크
 function chk_same_pw(passwd1, passwd2){   
@@ -197,6 +203,7 @@ function chk_phone(){
 }
 
 function chk_name(){
+	
     const err = document.querySelector('#name_sec>.err_msg');
     const name = name_input.value;
     const isValue = name_parttern.test(name);
@@ -211,7 +218,6 @@ function chk_name(){
     }
     
 }
-
 
 // 생년월일 체크
 function chk_birth(){
@@ -285,13 +291,21 @@ function removeClass(target){
     const id_input = document.querySelector('#uid_txt');
     id_input.addEventListener('focusout', (e)=>{ //
         
-        if(chk_id()){// 아이디 형식 체크
-            if(chk_overlap_id()){//중복 체크
-                return true;
+      		if(chk_id()){
+				
+				chk_overlap_id().then((res)=>{ //콜백함수 호출
+					
+					if(res === true){
+						return true  // 중복X 형식O
+					}else{
+						return false; //아이디 형식은 맞지만 중복
+					}		
+					
+				});
+				
             }else{
-                return false;
+                return false; //아이디 형식  오류
             }      
-        }
     })
     
 	// 비밀번호 형식 체크 핸들러
@@ -395,10 +409,11 @@ function removeClass(target){
 
 	submit.addEventListener('click', (e)=>{ // submit
         e.preventDefault();
+        
         if( chk_id() && chk_pw() && chk_email() && chk_phone() && chk_name() && chk_birth() ){
-			
+
 			chk_overlap_id().then((res) =>{
-				
+
 				if(res === true){
 					
 					const u_id = id_input.value;
@@ -416,7 +431,7 @@ function removeClass(target){
 						'phone' : u_phone,
 						'name' : u_name,
 						'birth' : u_birth,
-						'gender' : u_gender
+						'gende' : u_gender
 					}
 					
 					sign_up(_data, (res)=>{
@@ -424,9 +439,13 @@ function removeClass(target){
 							console.log('회원가입 성공');
 						}else{
 							console.log('회원가입 실패');
-						}			
-					});		
+						}
+						
+					});
+					
 				}
+				
 			})
+			
         }
 	})
