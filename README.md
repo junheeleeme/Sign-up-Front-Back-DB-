@@ -2,7 +2,8 @@
 
 ## initial Screen
 
-![image](https://user-images.githubusercontent.com/38034518/121572645-5e6f7a00-ca5f-11eb-9664-4aec15f1c323.png)
+![스크린샷 2021-06-14 오후 1 49 13](https://user-images.githubusercontent.com/38034518/121840503-60636280-cd17-11eb-81f7-7ce62d02a3a3.png)
+
 
 ## account(ac) DB Table
 ![image](https://user-images.githubusercontent.com/38034518/121783565-49732200-cbea-11eb-99ae-4a3eb0001c43.png)
