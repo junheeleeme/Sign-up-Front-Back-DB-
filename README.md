@@ -13,4 +13,6 @@
 
 ![image](https://user-images.githubusercontent.com/38034518/121841314-02377f00-cd19-11eb-8881-e7c3d9c8557f.png)
 
-![image](https://user-images.githubusercontent.com/38034518/121840731-c94ada80-cd17-11eb-9490-5819b6b35360.png)
+## Apply bcrypt to password 
+
+![image](https://user-images.githubusercontent.com/38034518/121841678-c650e980-cd19-11eb-89b2-f24df22a53eb.png)
