@@ -291,7 +291,7 @@ function removeClass(target){
     const id_input = document.querySelector('#uid_txt');
     id_input.addEventListener('focusout', (e)=>{ //
         
-      		if(chk_id()){
+            if(chk_id()){
 				
 				chk_overlap_id().then((res)=>{ //콜백함수 호출
 					
@@ -431,7 +431,7 @@ function removeClass(target){
 						'phone' : u_phone,
 						'name' : u_name,
 						'birth' : u_birth,
-						'gende' : u_gender
+						'gender' : u_gender
 					}
 					
 					sign_up(_data, (res)=>{

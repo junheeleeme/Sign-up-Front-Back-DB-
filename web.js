@@ -10,10 +10,10 @@ const mysql = require('mysql'); //mysql
 //Mysql 데이터는 다른 경로의 파일로 만들어 노출되지 않도록 다루고 .gitignore에 등록
 
 const db = mysql.createConnection({//mysql info
-    host: '15.164.95.58',
+    host: '3.37.61.235',
     user: 'root',
     password: '594573',
-    port: '53450',
+    port: '51416',
     database: 'account'
 })
 
