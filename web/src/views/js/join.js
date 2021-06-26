@@ -30,7 +30,7 @@ function chk_id(){
 
 
 // 아이디 중복 여부 체크
-function chk_overlap_id(callback){ 
+function chk_dup_id(callback){ 
 	
 	const id_txt = document.querySelector('#uid_txt').value;
 	const data = { account : { 'id' : id_txt } };
@@ -38,9 +38,8 @@ function chk_overlap_id(callback){
 	
 	return new Promise((resolve, reject) =>{
 		
-		axios.post('/chk_overlap_id', data).then( (res) => {
+		axios.post('/users/id/check', data).then( (res) => {
 		if(res.status === 200){
-			console.log("사용 가능한 아이디");
 			addOnClass(id_input);
 			resolve(true);
 		}
@@ -48,7 +47,7 @@ function chk_overlap_id(callback){
 			//console.log(err); 
 			err_msg.textContent = "존재하는 아이디입니다.";
 			addOffClass(id_input);
-			reject('중복된 아이디');
+			reject('Duplicate ID');
 		});
 		
 		
@@ -151,6 +150,30 @@ function chk_email(){
 	
 }
 
+//이메일 중복 체크
+function chk_dup_email(callback){ 
+	
+	const email_txt = document.querySelector('#uemail_txt').value;
+	const data = { account : { 'email' : email_txt } };
+    const err_msg = document.querySelector('#email_sec>.err_msg');
+	
+	return new Promise((resolve, reject) =>{
+		
+		axios.post('/users/email/check', data).then( (res) => {
+            if(res.status === 200){
+                addOnClass(email_input);
+                resolve(true);
+            }
+            }).catch( (err)=> {  
+                err_msg.textContent = "존재하는 이메일입니다.";
+                addOffClass(email_input);
+                reject('Duplicate email');
+            });
+        }
+    );
+}
+
+
 //숫자만 입력 (한글 입력은 됨..
 function only_num(keyCode){
 
@@ -251,6 +274,7 @@ function sign_up(data, res){
 		});
 		
 	})
+}
 /*
     $.ajax({
         url : url,
@@ -268,7 +292,7 @@ function sign_up(data, res){
         }
     })
 */
-}
+
 
 function addOnClass(target){
     target.classList.remove('off'); 
@@ -293,7 +317,7 @@ function removeClass(target){
         
             if(chk_id()){
 				
-				chk_overlap_id().then((res)=>{ //콜백함수 호출
+				chk_dup_id().then((res)=>{ //콜백함수 호출
 					
 					if(res === true){
 						return true  // 중복X 형식O
@@ -322,7 +346,7 @@ function removeClass(target){
 	pwr_input.addEventListener('keyup', (e)=>{ 
 		chk_pw();
 	})
-    pwr_input.addEventListener('focusout', (e)=>{ 
+    pwr_input.addEventListener('blur', (e)=>{ 
 		chk_pw();
 	})
 		
@@ -359,8 +383,12 @@ function removeClass(target){
 
     // Email 체크 핸들러
     const email_input = document.querySelector('#uemail_txt');
-    email_input.addEventListener('focusout', ()=>{
-        chk_email();
+    email_input.addEventListener('blur', ()=>{
+        
+        if(chk_email()){
+            chk_dup_email();
+        }
+
     })
 	
 	// 전화번호 인풋 박스 
@@ -408,42 +436,48 @@ function removeClass(target){
 	const submit = document.querySelector('#submit');
 
 	submit.addEventListener('click', (e)=>{ // submit
+
         e.preventDefault();
         
         if( chk_id() && chk_pw() && chk_email() && chk_phone() && chk_name() && chk_birth() ){
 
-			chk_overlap_id().then((res) =>{
+			chk_dup_id().then((res) =>{
 
-				if(res === true){
-					
-					const u_id = id_input.value;
-					const u_pw = pw_input.value;
-					const u_email = email_input.value;
-					const u_phone = phone1_input.value + phone2_input.value + phone3_input.value;
-					const u_name = name_input.value;
-					const u_birth = birth_input.value;
-					const u_gender = document.querySelector('input[name="gender"]:checked').value;
+                if(res === true){ //아이디 중복 체크 true일 경우
 
-					const _data = { 
-						'id' : u_id,
-						'pw' : u_pw,
-						'email' : u_email,
-						'phone' : u_phone,
-						'name' : u_name,
-						'birth' : u_birth,
-						'gender' : u_gender
-					}
-					
-					sign_up(_data, (res)=>{
-						if(res === true){
-							console.log('회원가입 성공');
-						}else{
-							console.log('회원가입 실패');
-						}
-						
-					});
-					
-				}
+                    chk_dup_email().then(( (res) => {
+
+                        if(res === true){ //이메일 중복 체크 true일 경우
+
+                            const u_id = id_input.value;
+                            const u_pw = pw_input.value;
+                            const u_email = email_input.value;
+                            const u_phone = phone1_input.value + phone2_input.value + phone3_input.value;
+                            const u_name = name_input.value;
+                            const u_birth = birth_input.value;
+                            const u_gender = document.querySelector('input[name="gender"]:checked').value;
+
+                            const _data = { 
+                                'id' : u_id,
+                                'pw' : u_pw,
+                                'email' : u_email,
+                                'phone' : u_phone,
+                                'name' : u_name,
+                                'birth' : u_birth,
+                                'gender' : u_gender
+                            }
+                            
+                            sign_up(_data, (res)=>{
+                                if(res === true){
+                                    console.log('회원가입 성공');
+                                }else{
+                                    console.log('회원가입 실패');
+                                }
+    
+                            });
+                        }
+                    }))
+                }
 				
 			})
 			
