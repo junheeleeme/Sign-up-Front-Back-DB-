@@ -5,10 +5,10 @@ const mysql = require('mysql'); //mysql
 
 const db = mysql.createConnection({//mysql connect info
     // 어차피 아이피랑 포트 매일 바뀜
-    host: '3.36.128.148',
+    host: '3.34.191.125',
     user: 'root',
-    password: '',
-    port: '51513',
+    password: '594573',
+    port: '56757',
     database: 'account'
 })
 

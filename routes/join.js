@@ -24,13 +24,13 @@ join.post('/users/id/check', (req, res)=>{
             for(let i=0 ; i<dbData.length ; i++){
                 if(dbData[i].u_id === chk_id.id){      
                     res.status(400).send('Not found'); //중복된 id가 있을 경우	
-					console.log('/chk_overlap_id : users id overlap');
+					console.log('아이디 중복 체크 : duplicated');
 					succeed = false;
                 }
             }
 			if(succeed){
 				res.sendStatus(200); //성공 호출을 위해 받은 데이터 그대로 송신
-				console.log('/chk_overlap_id : users id not overlap')
+				console.log('아이디 중복 체크 : Not duplicated');
 			}            
         }  
     })
@@ -41,9 +41,8 @@ join.post('/users/email/check', (req, res)=>{
     
 	const chk_email = req.body.account;
 	let succeed = true;
-	console.log(req.body)
-	
-    db.query(`SELECT u_email FROM ac;`, function(err, dbData){
+		
+    db.query(`SELECT u_email FROM ac;`, (err, dbData) => {
         if(err) {
             console.log(err);
         }else{
@@ -51,37 +50,44 @@ join.post('/users/email/check', (req, res)=>{
             for(let i=0 ; i<dbData.length ; i++){
                 if(dbData[i].u_email === chk_email.email){      
                     res.status(400).send('Not found'); //중복된 id가 있을 경우	
-					console.log('/chk_overlap_email : users email overlap');
+					console.log('아이디 중복 체크 : duplicated');
 					succeed = false;
                 }
             }
+			
 			if(succeed){
-				res.sendStatus(200); //성공 호출을 위해 받은 데이터 그대로 송신
-				console.log('/chk_overlap_email : users email not overlap')
-			}            
+				res.status(200).send(); //성공
+				console.log('아이디 중복 체크 : Not duplicated');
+			}
+			
         }  
     })
 });
 
-//POST - 회원등록
-join.post('/create_ac', (req, res)=>{
+//POST - 회원가입
+join.post('/create/users/account', (req, res) => {
     
-    console.log(req.body)
+    console.log(req.body);
 	
 	const encrypted_pw = bcrypt.hashSync(req.body.pw, 10);
-	
+	/*
     //받은 회원 정보 DB 입력
     db.query(`INSERT INTO ac (u_id, u_pw, u_name, u_birth, u_phone, u_email, u_gender)
             VALUES('${req.body.id}', '${encrypted_pw}', '${req.body.name}', '${req.body.birth}',
-            '${req.body.phone}', '${req.body.email}', '${req.body.gender}');`, function(err, dbData){
-        if(err) {
+            '${req.body.phone}', '${req.body.email}', '${req.body.gender}');`, (err, dbData) => {
+        
+		console.log(err);
+		if(err) {
+			res.status(400).send();
             console.log(err);
-            res.status(400).send();
         }else{
-            res.status(200).send();
-            console.log('회원가입 완료');
+            res.redirect(200, '/login.html');
+            console.log('succeed join!');
         }
+		
     })
+	*/
+	res.redirect(200, '/login');
 });
 
 
