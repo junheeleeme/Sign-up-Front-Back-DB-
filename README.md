@@ -1,4 +1,4 @@
-# 회원가입 => 업그레이드 버전([Link](https://github.com/macjjuni/mui-formik-yup))
+# 회원가입 => 업그레이드 버전([🔗Link](https://github.com/macjjuni/mui-formik-yup))
 
 ## 💻 기술스택
 
