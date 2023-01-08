@@ -1,6 +1,13 @@
-# 회원가입 기능구현
+# 회원가입 => 업그레이드 버전([Link](https://github.com/macjjuni/mui-formik-yup))
 
-<br/>
+## 💻 기술스택
+
+- [X] Express
+- [X] Bcrypto
+- [X] Mysql
+- [X] pm2
+
+<br>
 
 ## 📸 스크린샷
 
