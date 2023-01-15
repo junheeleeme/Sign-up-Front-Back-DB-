@@ -1,4 +1,4 @@
-# 회원가입 => 업그레이드 버전([🔗Link](https://github.com/macjjuni/mui-formik-yup))
+# 회원가입 (벨리데이션 체크만 하는 경우 => ([🔗Link](https://github.com/macjjuni/mui-formik-yup)))
 
 ## 💻 기술스택
 
